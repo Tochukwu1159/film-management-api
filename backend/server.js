@@ -3,10 +3,8 @@ import fileUpload  from 'express-fileupload';
 import morgan from "morgan";
 import dotenv from "dotenv";
 import cors from "cors";
-import sequelize from "./database/db.js";
+import connectDB from "./database/db.js";
 import authRoutes from './routes/authRoutes.js';
-import filmRoutes from './routes/filmRoutes.js';
-import purchaseRoutes from "./routes/purchaseRoutes.js"
 import userRoutes from './routes/userRoute.js';
 
 
@@ -34,23 +32,23 @@ app.use((req, res, next) => {
   next();
 });
 
-sequelize.sync().then(() => {
-  app.listen(5000, () => {
-    console.log('Server is running on port 5000');
-  });
+connectDB();
+
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
 
 
 app.use('/api/auth', authRoutes);
-app.use('/api/film', filmRoutes);
-app.use('/api/purchase', purchaseRoutes);
-app.use('/api/users', userRoutes);
+app.use('/api/user', userRoutes);
 
 
 
 app.get("/", (req, res) => {
   res.send({
-    message: "Hi, welcome to Film Sales API service",
+    message: "Hi, welcome to Bottle Up  API service",
   });
 });
 
